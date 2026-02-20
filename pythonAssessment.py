@@ -11,16 +11,22 @@ def count_specific_word(article, search_word) :
     # Edge Case -> Return 0(zero) if no matches are found
     try :
         if search_word.lower() in article.lower() :
-            word_list = article.lower().split()    
+            cleaned_text = re.sub(r"[^\w\s]", '', article)
+            
+            word_list = cleaned_text.lower().split()
+            
             word_count = word_list.count(search_word.lower())
             return word_count
         else :
-            print("Search word not available.")
             return 0
     
     except :
         return "Invalid input. Enter a text."
 
+
+print(count_specific_word("This is a test. This is only a test.", "test"))
+print(count_specific_word("apple apple banana banana banana", "banana"))
+print(count_specific_word("", "test"))
 
 # Identify the most common word in a text
 def identify_most_common_word(article) :
@@ -29,7 +35,7 @@ def identify_most_common_word(article) :
     # Display the most common word
     # Edge Case -> Empty 'str' should return 'None'
     try :
-        if article :
+        while article :
             word_list = article.lower().split()
     
             most_common_tuple = collections.Counter(word_list).most_common(1)
@@ -79,7 +85,10 @@ def count_paragraphs(article) :
         if article :
             paragraph_list = article.split('\n\n')
     
-            non_empty_paragraphs = [p.strip() for p in paragraph_list if p.strip()]
+            non_empty_paragraphs = []
+            for p in paragraph_list :
+                if p.strip() :
+                    non_empty_paragraphs.append(p.strip())
     
             num_of_paragraphs = len(non_empty_paragraphs)
             return int(num_of_paragraphs)
